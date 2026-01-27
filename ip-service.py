@@ -1,10 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import socket
-
+import subprocess
+import json
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        hostname = socket.gethostname()
-        ip = socket.gethostbyname(hostname)
+        ip = json.loads(subprocess.run('ip -j a'.split(),capture_output=True).stdout.decode())[1]['addr_info'][0]['local']
 
         html = f"""
         <html>
